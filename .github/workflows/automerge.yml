@@ -1,0 +1,44 @@
+name: automerge
+on:
+  pull_request_target:
+    types:
+      - labeled
+      - unlabeled
+      - synchronize
+      - opened
+      - edited
+      - ready_for_review
+      - reopened
+      - unlocked
+    # Only trigger on pull requests labeled with automerge
+    # and exclude changes to README.md
+    paths-ignore:
+      - '**/README.md'
+    # Only trigger if the automerge label is present
+    # and the pull request is mergeable
+    if: |
+      github.event.label.name == 'automerge' &&
+      github.event.pull_request.mergeable == true
+  pull_request_review:
+    types:
+      - submitted
+    # Only trigger if the automerge label is present
+    # and the pull request is mergeable
+    if: |
+      github.event.pull_request.labels | map(.name) | index("automerge") != null &&
+      github.event.pull_request.mergeable == true
+  check_suite:
+    types:
+      - completed
+  status: {}
+permissions: write-all
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - id: automerge
+        name: automerge
+        uses: "pascalgn/automerge-action@v0.15.5"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: "automerge"
