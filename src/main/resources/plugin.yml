@@ -1,6 +1,6 @@
 name: community-plugin
 version: '${version}'
-main: com.communityplugin.Community_plugin
+main: com.communityplugin.Main
 api-version: 1.19
 load: STARTUP
 authors: [tympanicblock61]
