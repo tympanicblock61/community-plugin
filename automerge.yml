@@ -1,0 +1,38 @@
+name: automerge
+on:
+  pull_request_target:
+    types:
+      - labeled
+      - unlabeled
+      - synchronize
+      - opened
+      - edited
+      - ready_for_review
+      - reopened
+      - unlocked
+  pull_request_review:
+    types:
+      - submitted
+  check_suite:
+    types:
+      - completed
+  status: {}
+permissions: write-all
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if file is readme.md
+        id: check_files
+        run: |
+          if [[ $(git diff --name-only ${{ github.event.pull_request.head.sha }} ${{ github.event.pull_request.base.sha }}) == *readme.md* ]]; then
+            echo "::set-output name=should_merge::false"
+          else
+            echo "::set-output name=should_merge::true"
+          fi
+      - name: automerge
+        if: steps.check_files.outputs.should_merge == 'true'
+        uses: "pascalgn/automerge-action@v0.15.5"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: ""
