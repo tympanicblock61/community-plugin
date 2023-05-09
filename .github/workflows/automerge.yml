@@ -14,11 +14,6 @@ on:
     # and exclude changes to README.md
     paths-ignore:
       - '**/README.md'
-    # Only trigger if the automerge label is present
-    # and the pull request is mergeable
-    if: |
-      github.event.label.name == 'automerge' &&
-      github.event.pull_request.mergeable == true
   pull_request_review:
     types:
       - submitted
@@ -34,7 +29,7 @@ on:
 permissions: write-all
 jobs:
   automerge:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - id: automerge
         name: automerge
