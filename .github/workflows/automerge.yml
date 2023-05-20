@@ -10,10 +10,6 @@ on:
       - ready_for_review
       - reopened
       - unlocked
-    # Only trigger on pull requests labeled with automerge
-    # and exclude changes to README.md
-    paths-ignore:
-      - '**/README.md'
   pull_request_review:
     types:
       - submitted

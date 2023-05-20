@@ -1,0 +1,15 @@
+name: Plus9k - Rust
+
+on: [issue_comment]
+
+jobs:
+  plus9k:
+    name: Plus-9k
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Plus 9k
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          MESSAGE: ${{ secrets.GITHUB_TOKEN }}
+        uses: docker://scepticulous/plus9:v1.0.0
